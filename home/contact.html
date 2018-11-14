@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <meta charset="utf-8" />
+  <title>OttoAir - Contact Us</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="keywords" content="ottoair">
+  <!-- BEGIN PLUGINS -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <link href="assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css" />
+  <!-- END PLUGINS -->
+  <!-- BEGIN PAGES CSS -->
+  <link class="main-stylesheet" href="pages/css/pages.css" rel="stylesheet" type="text/css" />
+  <!-- BEGIN PAGES CSS -->
+  <!-- SSL -->
+  <!--
+  <script type="text/javascript">
+     var tlJsHost = ((window.location.protocol == "https:") ? "https://secure.comodo.com/" : "http://www.trustlogo.com/");
+     document.write(unescape("%3Cscript src='" + tlJsHost + "trustlogo/javascript/trustlogo.js' type='text/javascript'%3E%3C/script%3E"));
+  </script> -->
+
+ <!-- Bootstrap core CSS -->
+ <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+ <!-- Custom fonts for this template -->
+ <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+ <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+ <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+ <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+ <link href="css/creative.css" rel="stylesheet">
+ <link href="css/contact.css" rel="stylesheet">
+ <script src="vendor/jquery/jquery.min.js"></script>
+
+</head>
+
+  <body class="bg-master-lighter" id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg bg-white fixed-top text-uppercase border-bottom" id="mainNav">
+      <div class="container">
+        <a class="js-scroll-trigger" href="index.html"><img src="assets/images/OttoLogo.png" height="42" width="50"></a>
+        <button class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                <a class="navbar-brand js-scroll-trigger" href="index.html"> OttoAir</a>
+              </li>
+          </ul>
+          <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                  <a class="nav-link js-scroll-trigger" href="about.html">about</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link js-scroll-trigger" href="contact.html">contact</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="https://ottoair.ca/dashboard/account/register">Sign Up</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="https://ottoair.ca/dashboard/account/login">Log In</a>
+              </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <section id="contact" class="parallax-section landing">
+     <div class="container">
+      <div class="row">
+
+       <div class="col-md-7 col-sm-10 get-in-touch">
+            <!-- CONTACT FORM HERE -->
+            <div class="wow fadeInUp section-title" data-wow-delay="0.2s">
+                 <h2>Get in touch</h2>
+                 <p>Leave us your contact info, and we will contact you within 24 hours. </p>
+            </div>
+            <div class="wow fadeInUp" data-wow-delay="0.4s">
+                <form id="contact-form" action="javascript:;" onsubmit="contactSubmit()" method="get">
+                      <div class="col-md-6 col-sm-6">
+                           <input type="text" class="form-control border" name="from_name" placeholder="Name" required="">
+                      </div>
+                      <div class="col-md-6 col-sm-6">
+                           <input type="email" class="form-control border" name="from" placeholder="Email" required="">
+                      </div>
+                      <div class="col-md-6 col-sm-6">
+                           <input type="tel" class="form-control border" name="phone" placeholder="Phone #" required="">
+                      </div>
+                      <div class="col-md-6 col-sm-6">
+                           <input type="text" class="form-control border" name="wechat" placeholder="Wechat ID" required="">
+                      </div>
+                      <div class="col-md-6 col-sm-6">
+                        <h8> Prefered contact method: </h8>
+                      </div>
+                      <div class="col-md-6 col-sm-6">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="contact_method" value="e-mail">
+                          <label class="form-check-label" for="inlineCheckbox1">Email</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="contact_method" value="phone">
+                          <label class="form-check-label" for="inlineCheckbox2">Phone</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="contact_method" value="wechat">
+                          <label class="form-check-label" for="inlineCheckbox3">Wechat</label>
+                        </div>
+                      </div>
+                      <div class="col-md-12 col-sm-12">
+                           <textarea class="form-control border" rows="5" name="message" placeholder="Message" required=""></textarea>
+                      </div>
+                </form>
+
+                <!-- <div class="col-md-offset-8 col-md-4 col-sm-offset-6 col-sm-6"> -->
+                <div class="col-md-offset-8 col-md-4 col-sm-offset-6 col-sm-6">
+                  <button id="submit" class="form-control border" name="submit">Send Message</button>
+                </div>
+                <div id="message-success" class="col-md-12 col-sm-12" style="display:none;">
+                 <p>The message has been sent successfully! We will reply with in 24 hours. </p>
+                 <div class="col-md-offset-8 col-md-4 col-sm-offset-6 col-sm-6">
+                    <button id="resend" class="form-control border">Send Another</button>
+                 </div>
+                </div>
+
+            </div>
+       </div>
+
+
+       <script type="text/javascript">
+        function contactSubmit() {
+          var body = '';
+          body += '<b>Visitor Name:</b> ' + $('input[name="from_name"]').val() + '<br/>';
+          body += '<b>Visitor E-mail:</b> ' + $('input[name="from"]').val() + '<br/>';
+          body += '<b>Visitor Phone:</b> ' + $('input[name="phone"]').val() + '<br/>';
+          body += '<b>Visitor WeChat:</b> ' + $('input[name="wechat"]').val() + '<br/>';
+          body += '<b>Preferred Contact Method:</b> ' + $('input[name=contact_method]:checked').map(function() {return this.value;}).get().join(',') + '<br/>';
+          body += '<b>Message:</b><br/><br/> ' + $('textarea[name="message"]').val() + '<br/><br/>';
+          body += '<small>Sent through <b>ottoair.ca</b> contact-us-form at ' + new Date($.now()) + '</small>';
+          $.ajax({
+            url: 'https://ottoair.ca/dashboard/api/mail',
+            method: 'POST',
+            data: $('input[name="from_name"], input[name="from"]').serialize() + '&reply_to=' + $('input[name="from"]').val() + '&reply_name=' + $('input[name="from_name"]').val() + '&subject=OttoAir Inquiry from ' + $('input[name="from_name"]').val() + '&body=' + body,
+            beforeSend: function(){
+              $('#submit').html('<i class="fa fa-spinner fa-spin"></i> ' + $('#submit').html());
+            },
+            complete: function(){
+              $('#submit i.fa').remove();
+            },
+            success: function(){
+              console.log('successfully sent');
+              toggleForm();
+            }
+          })
+        }
+        function toggleForm (){
+          $('#contact-form').toggle().find('textarea').val('');
+          $('#submit, #message-success').toggle();
+        }
+        $('#submit').click(contactSubmit);
+        $('#resend').click(toggleForm);
+       </script>
+
+       <div class="col-md-5 col-sm-8">
+            <!-- CONTACT INFO -->
+          <div class="wow fadeInUp contact-info" data-wow-delay="0.4s">
+             <div class="section-title">
+                  <h2>Contact info</h2>
+                  <p>Our office hours are Monday - Friday 9 am - 5 pm.</p>
+             </div>
+             <p><i class="fa fa-map-marker"></i> Address: 777 Bay St, Toronto, ON, Canada, M5B2H4</p>
+             <p><i class="fa fa-comment"></i> <a href="mailto:info@ottoair.ca"> Email: info@ottoair.ca</a></p>
+             <p><i class="fa fa-phone"></i> Phone Number: 1-647-739-9986</p>
+             <p><i class="fab fa-weixin"></i> Wechat ID: Otto_Toronto</p>
+             <img src="img/wechat.png" width="200px" height="200px">
+          </div>
+       </div>
+
+      </div>
+     </div>
+    </section>
+
+    <section class="p-b-30 p-t-40 bg-master-dark bot-footer">
+        <div class="container">
+            <div class="row element-center">
+                <img src="assets/images/OttoLogo.png" height="30" width="35">
+                &nbsp;&nbsp;&nbsp;
+                <h3 style="font-family: 'Montserrat', sans-serif; font-weight:bolder;color:white;">OttoAir</h3>
+                <!-- <img src="assets/images/logo_black.png" class="logo inline m-r-50" alt=""> -->
+            </div>
+            <div class="row element-center m-t-10 text-white font-arial">
+                <div class="col-md-2 text-center"><a href="index.html" class="hint-text">Home</a></div>
+                <div class="col-md-2 text-center"><a href="contact.html" class="hint-text">Contact Us</a></div>
+                <div class="col-md-2 text-center"><a href="about.html" class="hint-text">About Us</a></div>
+                <div class="col-md-2 text-center"><a href="#" class="hint-text">Terms &amp; Service</a></div>
+                <div class="col-md-2 text-center"><a href="#" class="hint-text">Privacy Policy</a></div>
+                <div class="col-md-2 text-center"><a href="#" class="hint-text">Back To Top</a></div>
+                <script type="text/javascript">
+
+                    $(document).ready(function () {
+                        $('#btt').on('click', function (e) {
+                            e.preventDefault();
+                            $('html, body').stop(true, false).animate({ scrollTop: 0 }, 600);
+                        });
+                    });
+                </script>
+            </div>
+            <div class="row text-center copy-right">
+                <p class="fs-11 font-arial muted text-white">2016-2018, OTTOAIR, Inc. (d/b/a OTTOAIR) All rights reserved. OTTOAIR, Ottoair.ca, and the OTTOAIR logo are either registered trademarks or trademarks of OTTOAIR, Inc. in Canada and/or other countries. Other logos or product and company names mentioned herein may be the property of their respective owners.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
+    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+
+  </body>
+
+</html>

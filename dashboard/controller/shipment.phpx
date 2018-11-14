@@ -1,0 +1,348 @@
+<?php
+class ControllerShipment extends DashboardController {
+
+    // Autoload
+    public function __construct($registry = array()) {
+        parent::__construct($registry);
+        // Load model
+        $this->load->model('shipment');
+        // Load language
+        $this->load->language('shipment');
+    }
+
+    public function index() {
+        $this->get_list();
+    }
+
+    public function get_list() {
+        $data['breadcrumb'] = array(
+            $this->language['text_dashboard'] =>  HTTP_SERVER,
+            $this->language['heading_title'] =>  HTTP_SERVER . 'shipment/',
+        );
+
+        $data['heading_title'] = $this->language['heading_title'];
+        $data['page_name'] = $this->language['heading_title'];
+
+        $data['url_create'] = HTTP_SERVER . 'shipment/form';
+
+        $data['shipments'] = array();
+        foreach ($this->model_shipment->listShipmentsByUserId($this->user['user_id']) as $shipment) {
+            $shipment['items'] = $this->model_shipment->getShipmentItems($shipment['shipment_id']);
+            $shipment['tracking'] = $this->model_shipment->getShipmentTrackings($shipment['shipment_id'])[0];
+            $shipment['url_detail'] = HTTP_SERVER . 'shipment/detail/' . $shipment['shipment_id'];
+            $shipment['url_detail_pay'] = $shipment['url_detail'] . '/pay';
+            $data['shipments'][] = $shipment;
+        }
+
+        $data['head'] = '
+            <link href="' . HTTP_SERVER . 'assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+            <link href="' . HTTP_SERVER . 'assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
+            <link href="' . HTTP_SERVER . 'assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
+            <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+        ';
+
+        $data['foot'] = '
+            <script src="' . HTTP_SERVER . 'assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+            <script src="' . HTTP_SERVER . 'assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
+            <script src="' . HTTP_SERVER . 'assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
+            <script src="' . HTTP_SERVER . 'assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
+            <script type="text/javascript" src="' . HTTP_SERVER . 'assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
+            <script type="text/javascript" src="' . HTTP_SERVER . 'assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+            <script src="' . HTTP_SERVER . 'assets/js/tables.js" type="text/javascript"></script>
+        ';
+
+        // Render but capture output
+        $data['sidebar'] = $this->load->controller('common/sidebar')->render(CAPTURE_RESULT, $data);
+        $data['wrapper_top'] = $this->load->controller('common/wrapper_top')->render(CAPTURE_RESULT, $data);
+        $data['wrapper_bottom'] = $this->load->controller('common/wrapper_bottom')->render(CAPTURE_RESULT, $data);
+
+        // Render and stream
+        $b = $this->load->view('shipment/list', $data);
+    }
+
+    public function form() {
+        $data['breadcrumb'] = array(
+            $this->language['text_dashboard'] =>  HTTP_SERVER,
+            $this->language['heading_title'] =>  HTTP_SERVER . 'shipment/',
+            $this->language['heading_form'] =>  HTTP_SERVER . 'shipment/form/',
+        );
+
+        $data['heading_title'] = $this->language['heading_form'];
+        $data['page_name'] = $this->language['heading_form'];
+
+        $data['url_shipment_list'] = HTTP_SERVER . 'shipment';
+        $data['url_submit'] = HTTP_SERVER . 'shipment/submit_form';
+        $data['url_get_addresses'] = HTTP_SERVER  . 'shipment/get_addresses/' . $this->user['user_id'];
+        $data['url_get_price'] = HTTP_SERVER . 'shipment/getPrice';
+
+        $data['expl_privacy_more'] = sprintf($this->language['expl_privacy_more'], HTTP_SERVER . 'privacy');
+        $data['expl_limitations'] = sprintf($this->language['expl_limitations'], HTTP_SERVER . 'terms');
+        $data['item_list'] = array(
+          'item1' => 'item1'
+        );
+
+        $data['user'] = $this->user;
+
+        $data['head'] = '
+            <link href="' . HTTP_SERVER . 'assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
+            <link href="' . HTTP_SERVER . 'assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" media="screen">
+        ';
+        $data['foot'] = '
+            <script src="' . HTTP_SERVER . 'assets/plugins/bootstrap3-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+            <script type="text/javascript" src="' . HTTP_SERVER . 'assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
+            <script type="text/javascript" src="' . HTTP_SERVER . 'assets/plugins/dropzone/dropzone.min.js"></script>
+            <script type="text/javascript" src="' . HTTP_SERVER . 'assets/plugins/bootstrap-tag/bootstrap-tagsinput.min.js"></script>
+            <script type="text/javascript" src="' . HTTP_SERVER . 'assets/plugins/jquery-inputmask/jquery.inputmask.min.js"></script>
+            <script src="' . HTTP_SERVER . 'assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
+            <script src="' . HTTP_SERVER . 'assets/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+            <script src="' . HTTP_SERVER . 'assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
+            <script src="' . HTTP_SERVER . 'assets/plugins/summernote/js/summernote.min.js" type="text/javascript"></script>
+            <script src="' . HTTP_SERVER . 'assets/plugins/moment/moment.min.js"></script>
+            <script src="' . HTTP_SERVER . 'assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+            <script src="' . HTTP_SERVER . 'assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
+            <script src="' . HTTP_SERVER . 'assets/js/form_wizard.js" type="text/javascript"></script>
+            <script src="' . HTTP_SERVER . 'assets/js/form_elements.js" type="text/javascript"></script>
+        ';
+
+        // Render but capture output
+        $data['sidebar'] = $this->load->controller('common/sidebar')->render(CAPTURE_RESULT, $data);
+        $data['wrapper_top'] = $this->load->controller('common/wrapper_top')->render(CAPTURE_RESULT, $data);
+        $data['wrapper_bottom'] = $this->load->controller('common/wrapper_bottom')->render(CAPTURE_RESULT, $data);
+
+        // Render and stream
+        $this->load->view('shipment/form', $data);
+    }
+
+    public function submit_form() {
+
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
+            $data['user_id'] = $this->user['user_id'];
+            $data['sender_name'] = htmlspecialchars_decode($_POST['sender_fname'])
+                          . ' ' . htmlspecialchars_decode($_POST['sender_lname']);
+            $data['sender_phone'] = htmlspecialchars_decode($_POST['sender_phone']);
+            $data['sender_wx'] = htmlspecialchars_decode($_POST['sender_wx']);
+            $data['sender_email'] = htmlspecialchars_decode($_POST['sender_email']);
+            $data['sender_province'] = htmlspecialchars_decode($_POST['sender_province']);
+            $data['sender_city'] = htmlspecialchars_decode($_POST['sender_city']);
+            $data['sender_address'] = htmlspecialchars_decode($_POST['sender_address']);
+            $data['sender_postal'] = htmlspecialchars_decode($_POST['sender_postal']);
+            $data['receiver_province'] = htmlspecialchars_decode($_POST['receiver_province']);
+            $data['receiver_city'] = htmlspecialchars_decode($_POST['receiver_city']);
+            $data['receiver_address'] = htmlspecialchars_decode($_POST['receiver_address']);
+            $data['receiver_postal'] = htmlspecialchars_decode($_POST['receiver_postal']);
+            $data['receiver_name'] = htmlspecialchars_decode($_POST['receiver_fname'])
+                          . ' ' . htmlspecialchars_decode($_POST['receiver_lname']);
+            $data['receiver_phone'] = htmlspecialchars_decode($_POST['receiver_phone']);
+            $data['items'] = $_POST['item'];
+
+            $json = $this->model_shipment->createShipment($data, CAPTURE_RESULT);
+            if ($json['success']) {
+                $body = array(
+                    'shipment_id'         =>     $json['shipment_id'],
+                    'user_id'             =>     $data['user_id'],
+                    'sender_name'         =>     $data['sender_name'],
+                    'sender_phone'        =>     $data['sender_phone'],
+                    'sender_wx'           =>     $data['sender_wx'],
+                    'sender_email'        =>     $data['sender_email'],
+                    'sender_address'      =>     $data['sender_address'] . ", " . $data['sender_city'] . ", " .$data['sender_province']. ", " . $data['sender_postal'],
+                    'receiver_name'       =>     $data['receiver_name'],
+                    'receiver_phone'      =>     $data['receiver_phone'],
+                    'receiver_address'    =>     $data['receiver_address'] . ", " . $data['receiver_city'] . ", " .$data['receiver_province']. ", " . $data['receiver_postal'],
+                    'items'               =>     $data['items']
+                );
+                //curl call
+                $host = "https://ottoair.ca/mailer/mail.php";
+                $process = curl_init($host);
+                curl_setopt($process, CURLOPT_HTTPHEADER, array(
+                    'Content-Type: application/json',
+                    'Accept: application/json'
+                    ));
+                curl_setopt($process, CURLOPT_POSTFIELDS, json_encode($body));
+                curl_setopt($process, CURLOPT_TIMEOUT, 30);
+                curl_setopt($process, CURLOPT_RETURNTRANSFER, true);
+                curl_exec($process);
+                curl_close($process);
+                $json['redirect'] = HTTP_SERVER . 'shipment/detail/' . $json['shipment_id'];
+            }
+
+            // $address['customer_id'] =
+            exit(json_encode($json));
+        } else {
+            exit(json_encode(array('success' => false, 'message' => $this->language['error_server'])));
+        }
+    }
+
+    public function detail($shipment_id = false, $open_payment_modal = false) {
+        if (!is_numeric($shipment_id)) {
+            $this->redirect(HTTP_SERVER . '404');
+        }
+
+        $data['shipment'] = $this->model_shipment->getShipment($shipment_id);
+
+        if (!$data['shipment']) {
+            $this->redirect(HTTP_SERVER . '404');
+        }
+
+        $host = "https://data.ottoair.ca/dev.php/api/beta/address";
+        $token = 'Q83ZJ4T6PQ4S1G09IEOXLQM9LM974LLS6K8NOPA6XJQ9J4XBS0AEF00GHTPX5TRP';
+
+        $sender_address = $data['shipment']['sender_address']
+                        . $data['shipment']['sender_city']
+                        . $data['shipment']['sender_province']
+                        . $data['shipment']['sender_postal'];
+
+        $process = curl_init($host);
+        curl_setopt($process, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Accept: application/json',
+            'Token: ' . $token
+            ));
+        curl_setopt($process, CURLOPT_POSTFIELDS, json_encode(array('address' => $sender_address)));
+        curl_setopt($process, CURLOPT_TIMEOUT, 30);
+        curl_setopt($process, CURLOPT_RETURNTRANSFER, true);
+        $s_address = json_decode(curl_exec($process));
+        curl_close($process);
+        $data['shipment']['s_lat'] = $s_address->data->latitude;
+        $data['shipment']['s_lng'] = $s_address->data->longitude;
+
+
+        $receiver_address = $data['shipment']['receiver_address']
+                        . $data['shipment']['receiver_city']
+                        . $data['shipment']['receiver_province']
+                        . $data['shipment']['receiver_postal'];
+
+        $process = curl_init($host);
+        curl_setopt($process, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Accept: application/json',
+            'Token: ' . $token
+            ));
+        curl_setopt($process, CURLOPT_POSTFIELDS, json_encode(array('address' => $receiver_address)));
+        curl_setopt($process, CURLOPT_TIMEOUT, 30);
+        curl_setopt($process, CURLOPT_RETURNTRANSFER, true);
+        $r_address = json_decode(curl_exec($process));
+        curl_close($process);
+        $data['shipment']['r_lat'] = $r_address->data->latitude;
+        $data['shipment']['r_lng'] = $r_address->data->longitude;
+
+        $data['heading_title'] = sprintf($this->language['heading_detail'], str_pad($shipment_id, 4, '0', STR_PAD_LEFT));
+        $data['page_name'] = $data['heading_title'];
+
+        $data['breadcrumb'] = array(
+            $this->language['text_dashboard'] =>  HTTP_SERVER,
+            $this->language['heading_title'] =>  HTTP_SERVER . 'shipment/',
+            $data['heading_title'] =>  HTTP_SERVER . 'shipment/detail/',
+        );
+
+        $data['items']   = $this->model_shipment->getShipmentItems($shipment_id);
+        $data['trackings'] = $this->model_shipment->getShipmentTrackings($shipment_id);
+        $data['balance'] = (float)$data['shipment']['total_price'] - (float)$data['shipment']['payment'];
+        $data['url_shipments'] = HTTP_SERVER . 'shipment';
+        $data['url_payment'] = HTTP_SERVER . 'shipment/payment/' . $shipment_id . '/';
+        $data['url_pd_get'] = HTTP_SERVER . 'shipment/pdGet/' . $shipment_id;
+        $data['url_pd_select'] = HTTP_SERVER . 'shipment/pdSelect/' . $shipment_id;
+        $data['open_payment_modal'] = $open_payment_modal === 'pay';
+
+        // Render but capture output
+        $data['sidebar'] = $this->load->controller('common/sidebar')->render(CAPTURE_RESULT, $data);
+        $data['wrapper_top'] = $this->load->controller('common/wrapper_top')->render(CAPTURE_RESULT, $data);
+        $data['wrapper_bottom'] = $this->load->controller('common/wrapper_bottom')->render(CAPTURE_RESULT, $data);
+
+        // Render and stream
+        $this->load->view('shipment/detail', $data);
+    }
+
+    public function payment($shipment_id, $amount = 0) {
+        $this->model_shipment->shipmentPayment($shipment_id, $amount);
+        $this->redirect(HTTP_SERVER . 'shipment/detail/' . $shipment_id);
+    }
+
+    public function get_addresses($user_id) {
+        $addresses = $this->model_user->getUserAddress($user_id);
+        $sender = [];
+        $receiver = [];
+        foreach ($addresses as $address) {
+          if ($address['type'] == 1) {
+          $sender[] = $address;
+          }else $receiver[] = $address;
+        }
+
+        if (!empty($addresses)){
+          exit(json_encode(array('success' => true, 'data1' => $sender, 'data2' => $receiver)));
+        } else exit(json_encode(array('success' => false)));
+    }
+
+    public function pdGet($shipment_id) {
+      $result = $this->model_shipment->getPD($shipment_id);
+      exit(json_encode(array('success' => true, 'data' => $result)));
+    }
+
+    public function pdSelect($shipment_id) {
+      if (isset($_POST['pd-select']) && isset($_POST['pd-region'])) {
+        $data['shipment_id'] = $shipment_id;
+        $data['pd-select'] = htmlspecialchars_decode($_POST['pd-select']);
+        $data['pd-region'] = htmlspecialchars_decode($_POST['pd-region']);
+        $result = $this->model_shipment->updatePD($shipment_id, $data);
+        exit(json_encode(array('success' => true)));
+      } else {
+        echo 'no';
+      }
+    }
+
+    public function getPrice() {
+        switch ($_POST['level'])
+        {
+
+          case '1':
+
+            $price = 15 * $_POST['count']; break;
+
+          case '2':
+
+            if ($_POST['item'] == 'shoes') {$price = 15 * $_POST['weight']; break;} // need a balancer
+            if ($_POST['item'] == 'phone') {$price = 8 * $_POST['weight'] * ($_POST['value'] * 1.08);break;} // if price < some then handle
+            if ($_POST['item'] == 'tablet') {$price = 8 * $_POST['weight'] * ($_POST['value'] * 1.12);break;}
+            if ($_POST['item'] == 'makeup') {$price = 10 * $_POST['weight']; break;}
+            $price = 8 * $_POST['weight']; break;
+
+          case '3':
+
+            $size = $_POST['size'];
+            $weight = $_POST['weight'];
+            $value = $_POST['value'];
+
+            if ($size >= 10000) {
+                $price = $weight * 10 * ($weight/10)
+                      + $size/($size/(30+$weight*3)) * ($size/10000)
+                      + $value * 0.05;
+
+            } else if ($size >= 5000 && $size < 10000) {
+              $price = $weight * 10 * 0.8
+                     + $size/($size/(20+$weight*3)) * ($size/7500)
+                     + $value * 0.05;
+
+            } else if ($size >= 2500 && $size < 5000) {
+              $price = $weight * 8
+                     + $size/($size/5) * ($size/1100)
+                     + $value * 0.05;
+
+              // 2500 will decrease
+
+            } else if ($size >= 1000 && $size < 2500) {
+              $price = $weight * 8
+                     + $size/($size/5) * ($size/1000)
+                     + $value * 0.05;
+
+            } else {
+              $price = $weight * 8 + $value * 0.05;
+            }
+
+            if ($price < 10) $price = $price + $price *0.4;
+            if ($size < 3000 && $price < 20) $price = $price + $price *0.25;
+            break;
+        }
+
+        // print_r(json_encode(array('success' => true, 'price' => $price)));
+        exit(json_encode(array('success' => true, 'price' => $price)));
+    }
+}

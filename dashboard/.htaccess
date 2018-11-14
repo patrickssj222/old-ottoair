@@ -1,0 +1,22 @@
+# Force HTTPS
+# RewriteCond %{HTTPS} off
+# RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+
+# If request url doesn't point to a directory but a php file, append .php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI}\.php -f
+RewriteRule ^(.+)$ $1.php [L,QSA]
+
+# If request url is a file but doesn't point to a valid one, assume virtual link
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} \.\w+$
+RewriteRule ^(.+)$ index.php?path=tool/download&filepath=$1 [L,QSA]
+
+# Otherwise point to router index.php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}\.php !-f
+RewriteCond %{REQUEST_URI} !\.\w*$
+RewriteRule ^(.+)$ index.php?path=$1 [L,QSA]
