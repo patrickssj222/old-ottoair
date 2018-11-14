@@ -1,2 +1,0 @@
-# Ignore any request to this folder and throw 404
-RewriteRule ^.*$ - [R=404,NC,L]
